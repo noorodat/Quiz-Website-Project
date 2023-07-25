@@ -43,6 +43,25 @@ fetch(`/JS/quizApp.json`)
         console.log(err);
     });
 
+    window.onload = () => {
+        // Check if there is a saved quiz state in session storage
+        const savedQuestionIndex = sessionStorage.getItem("currentQuestionIndex");
+        const savedQuizIndex = sessionStorage.getItem("currentQuizIndex");
+        const savedAnswers = JSON.parse(sessionStorage.getItem("tempAnswers"));
+    
+        if (savedQuestionIndex !== null && savedQuizIndex !== null) {
+            // Restore the current quiz state
+            questionIndex = parseInt(savedQuestionIndex);
+            quizTypeIndex = parseInt(savedQuizIndex);
+            answers = savedAnswers || []; // If there are no saved answers, initialize the answers array to an empty array
+    
+            // Update the quiz progress bar and show the current question
+            setProgressFill();
+            showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
+        }
+
+        localStorage.setItem("Answers", sessionStorage.getItem("tempAnswers"));
+    };
 
 function showQuiz(quizData, quizType, index) {
 
@@ -116,11 +135,11 @@ function nextQuestion() {
         // If an active button is found, add its text content to the answers array
         if (activeButton) {
             answers.push(activeButton.textContent);
-
+            sessionStorage.setItem("tempAnswers", JSON.stringify(answers));
             questionIndex++; // Move to the next question
 
             sessionStorage.setItem("currentQuestionIndex", questionIndex);
-
+            sessionStorage.setItem("currentQuizIndex", quizTypeIndex);
             // Check if we have reached the end of the current quiz type
             if (questionIndex >= quizzes[quizNames[quizTypeIndex]].length) {
                 if (quizTypeIndex === quizNames.length - 1) {

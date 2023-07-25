@@ -1,7 +1,7 @@
 let score = 0;
 let userAnswers = JSON.parse(localStorage.getItem('Answers'));
 let correctAnswers = [];
-
+console.log(userAnswers)
 Result = document.getElementById("result");
 fetch('/JS/quizApp.json')
     .then((res) => {
