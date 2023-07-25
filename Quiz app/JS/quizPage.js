@@ -1,3 +1,16 @@
+let allUsers = JSON.parse(localStorage.getItem("usersInfo"));
+let loggedInUser = {};
+
+
+let loginBtn = document.getElementById("login");
+let logoutBtn = document.getElementById("logout");
+let logoutCont = document.getElementById("logoutCont");
+let loginCont = document.getElementById("loginCont");
+let registerCont = document.getElementById("registerCont");
+let headerUserName = document.getElementById("headerUserName");
+
+
+
 let questionsContainer = document.getElementById("questionConteiner");
 let nextBtn = document.getElementById("next");
 let quizTypeImage = document.getElementById("quizTypeImage");
@@ -13,30 +26,75 @@ let quizResult;
 const quizTime = 20;
 
 
+// user loged in start
+
+for (let i = 0; i < allUsers.length; i++) {
+    if (allUsers[i].isLoggedIn === true) {
+        loggedInUser = allUsers[i];
+        document.getElementById("welcome").textContent = `Hello ${loggedInUser.firstName} ${loggedInUser.lastName}`;
+        logoutCont.style.display = "block"
+        loginCont.style.display = "none";
+        registerCont.style.display = "none";
+        headerUserName.style.display = "inline";
+        startQuizLink.href = "/HTML/quizPage.html"
+        headerUserName.textContent = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
+    else {
+            window.location.href = "/HTML/signinPage.html";
+        }
+    }
+}
+
+
+
+
+// user loged in end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 fetch(`/JS/quizApp.json`)
-.then((res) => {
-    if (res.ok) {
-        return res.json();
-    } 
-    else {
-        throw new Error("Error while fetching the data");
-    }
-})
-.then((data) => {
-    quizzes = data;
-    showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
-})
-.catch((err) => {
-    console.log(err);
-});
+    .then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        else {
+            throw new Error("Error while fetching the data");
+        }
+    })
+    .then((data) => {
+        quizzes = data;
+        showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 
 function showQuiz(quizData, quizType, index) {
 
-const quiz = quizData[quizType][index];
+    const quiz = quizData[quizType][index];
 
-questionsContainer.innerHTML = `
+    questionsContainer.innerHTML = `
     <div class="question" id="question">
         <p class="quizDescription h2">${quiz.question}</p>
         <div class="quizAnswers mt-4 p-4">
@@ -49,30 +107,30 @@ questionsContainer.innerHTML = `
     
 `;
 
-let options = document.querySelectorAll(".quizContent .quizAnswers button");
+    let options = document.querySelectorAll(".quizContent .quizAnswers button");
 
-options.forEach((option) => {
-    option.addEventListener("click", () => {
-        // Check if the clicked element already has the "active" class
-        let isActive = option.classList.contains("active");
+    options.forEach((option) => {
+        option.addEventListener("click", () => {
+            // Check if the clicked element already has the "active" class
+            let isActive = option.classList.contains("active");
 
-        // Remove the "active" class from all options
-        options.forEach((btn) => {
-            btn.classList.remove("active");
+            // Remove the "active" class from all options
+            options.forEach((btn) => {
+                btn.classList.remove("active");
+            });
+
+            // Add the "active" class only if the element wasn't already active
+            if (!isActive) {
+                option.classList.add("active");
+            }
         });
-
-        // Add the "active" class only if the element wasn't already active
-        if (!isActive) {
-            option.classList.add("active");
-        }
     });
-});
 
 }
 
 
 nextBtn.style.display = "none";
-fixedAlerts.innerHTML=`
+fixedAlerts.innerHTML = `
 <div>
 <img src="/Images/EnglishFixed.svg" alt="">
 <p class="quizDescription h2">Get raedy to strat the English Quiz</p>
@@ -88,7 +146,7 @@ document.getElementById("READY").addEventListener("click", () => {
 })
 
 function fixedBTN() {
-    fixedAlerts.style.display="none";
+    fixedAlerts.style.display = "none";
     nextBtn.style.display = "block";
 }
 
@@ -110,7 +168,7 @@ function nextQuestion() {
 
             // Check if we have reached the end of the current quiz type
             if (questionIndex >= quizzes[quizNames[quizTypeIndex]].length) {
-                    if (quizTypeIndex === quizNames.length - 1) {
+                if (quizTypeIndex === quizNames.length - 1) {
                     // We have reached the last quiz (technical_quiz) and the quiz has ended
                     // Disable the "Next" button
                     nextBtn.disabled = true;
@@ -121,8 +179,8 @@ function nextQuestion() {
                             <a href = "/HTML/scorePage.html"><button id="finishQuiz">Submit Answers</button></a>
                     </div>
                     `;
-    
-                      // Add to local storage on submit
+
+                    // Add to local storage on submit
                     document.getElementById("finishQuiz").onclick = () => {
                         submitAnswers();
                         clearInterval(countdownInterval);
@@ -131,28 +189,28 @@ function nextQuestion() {
                     document.getElementById("next").style.display = "none";
                     quizTitle.textContent = 'Done';
                     return; // Exit the function to prevent going back to the first quiz
-                } 
+                }
 
-                    else {
-                        // Move to the next quiz type
-                        quizTypeIndex++;
-                        // Reset the question index to start from the first question of the new quiz type
-                        questionIndex = 0;
-                        sessionStorage.setItem("currentQuestionIndex", questionIndex);
-                        sessionStorage.setItem("currentQuizIndex", quizTypeIndex);
-                    }
+                else {
+                    // Move to the next quiz type
+                    quizTypeIndex++;
+                    // Reset the question index to start from the first question of the new quiz type
+                    questionIndex = 0;
+                    sessionStorage.setItem("currentQuestionIndex", questionIndex);
+                    sessionStorage.setItem("currentQuizIndex", quizTypeIndex);
+                }
             }
 
-                // Update the questionsContainer with the new question's content
-                let progressWidth = ((questionIndex + 1) / quizzes[quizNames[quizTypeIndex]].length) * 100;
-                fill.style.width = `${progressWidth}%`;
+            // Update the questionsContainer with the new question's content
+            let progressWidth = ((questionIndex + 1) / quizzes[quizNames[quizTypeIndex]].length) * 100;
+            fill.style.width = `${progressWidth}%`;
 
-                if(quizTypeIndex === 0 && sure == true) {
-                    sure=false;
-                    quizTitle.textContent = 'English Quiz';
-                }
-                else if (quizTypeIndex === 1 && sure == false) {
-                    fixedAlerts.innerHTML=`
+            if (quizTypeIndex === 0 && sure == true) {
+                sure = false;
+                quizTitle.textContent = 'English Quiz';
+            }
+            else if (quizTypeIndex === 1 && sure == false) {
+                fixedAlerts.innerHTML = `
                     <div>
                     <img src="/Images/iqFixed.svg" alt="">
                     <p class="quizDescription h2">Get ready for the IQ Quiz</p>
@@ -161,19 +219,19 @@ function nextQuestion() {
                     <button  id="READY" onclick="fixedBTN()" >READY</button>
                     </div>
                     </div>
-                    `;  
+                    `;
 
-                    fixedAlerts.style.display="flex";
-                    nextBtn.style.display = "none";
+                fixedAlerts.style.display = "flex";
+                nextBtn.style.display = "none";
 
-                    quizTitle.textContent = 'IQ Quiz';
-                    quizTypeImage.src = '/Images/IQTest.svg'
+                quizTitle.textContent = 'IQ Quiz';
+                quizTypeImage.src = '/Images/IQTest.svg'
 
-                    sure = true;
+                sure = true;
 
-                }
-                else if(quizTypeIndex === 2 && sure == true) {
-                    fixedAlerts.innerHTML=`
+            }
+            else if (quizTypeIndex === 2 && sure == true) {
+                fixedAlerts.innerHTML = `
                     <div>
                     <img src="/Images/TechnicalFixed.svg" alt="">
                     <p class="quizDescription h2">The Start Of Technical Quiz</p>
@@ -184,18 +242,18 @@ function nextQuestion() {
                     </div>
                     `;
 
-                    quizTitle.textContent = 'Technical Quiz';
-                    quizTypeImage.src = `/Images/techSkills.svg`
+                quizTitle.textContent = 'Technical Quiz';
+                quizTypeImage.src = `/Images/techSkills.svg`
 
-                    fixedAlerts.style.display="flex";
-                    nextBtn.style.display = "none";
+                fixedAlerts.style.display = "flex";
+                nextBtn.style.display = "none";
 
-                    sure=false;
-                }
+                sure = false;
+            }
 
-                showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
+            showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
         }
-        
+
         else {
             warningMsg.textContent = 'Please choose one of the options';
             warningMsg.style.color = "red";
@@ -214,37 +272,37 @@ let remainingTime = quizTimeLimit; // Remaining time in seconds
 
 // Function to format time in MM:SS format
 function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
 // Function to start the countdown timer
 function startCountdown() {
     let timeLeft = sessionStorage.getItem("timeLeft");
     if (timeLeft) {
-      remainingTime = parseInt(timeLeft);
+        remainingTime = parseInt(timeLeft);
     } else {
-      remainingTime = quizTimeLimit;
+        remainingTime = quizTimeLimit;
     }
-  
+
     countdownInterval = setInterval(() => {
-      remainingTime -= 1;
-      sessionStorage.setItem("timeLeft", remainingTime);
-      if (remainingTime <= 0) {
-        // Time's up!
-        submitAnswers();
-        clearInterval(countdownInterval);
-        window.location.href = '/HTML/scorePage.html'
-        
-        // Handle end of the quiz (e.g., disable buttons, show results, etc.)
-        // Add your code here...
-        document.getElementById("timer").textContent = "00:00"; // Optional, set the timer to 00:00 when the time is up
-      }
-      // Update the timer display
-      document.getElementById("timer").textContent = formatTime(remainingTime);
+        remainingTime -= 1;
+        sessionStorage.setItem("timeLeft", remainingTime);
+        if (remainingTime <= 0) {
+            // Time's up!
+            submitAnswers();
+            clearInterval(countdownInterval);
+            window.location.href = '/HTML/scorePage.html'
+
+            // Handle end of the quiz (e.g., disable buttons, show results, etc.)
+            // Add your code here...
+            document.getElementById("timer").textContent = "00:00"; // Optional, set the timer to 00:00 when the time is up
+        }
+        // Update the timer display
+        document.getElementById("timer").textContent = formatTime(remainingTime);
     }, 1000);
-  }
+}
 
 // Call the startCountdown function when the quiz starts
 // startCountdown();

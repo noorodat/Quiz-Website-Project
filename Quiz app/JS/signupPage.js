@@ -3,8 +3,12 @@ const showPasswordIcons = document.querySelectorAll(".showPassword");
 const emailAddressInput = document.getElementById("emailAddress");
 const sumbitButton = document.getElementById("submit");
 const form = document.getElementById("form");
-let allUsers = [];
-let userObject = {};
+let allUsers = []
+
+if(localStorage.length !== 0) {
+    allUsers = JSON.parse(localStorage.getItem("usersInfo"));
+}
+
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -34,6 +38,16 @@ let lastNameInput = document.getElementById("lastName");
 /* End Regx */
 
 sumbitButton.onclick = () => {
+
+    let exists = false;
+
+    for(let i = 0; i < allUsers.length; i++) {
+        if(emailAddressInput.value === allUsers[i].email) {
+            exists = true;
+            break;
+        }
+    }
+
     if (!nameRegex.test(firstNameInput.value)) {
         errorMsg.textContent = `The first name must only contains letters`;
     }
@@ -46,6 +60,10 @@ sumbitButton.onclick = () => {
         errorMsg.textContent = `Use a valid email`;
     }
 
+    else if(exists) {
+        errorMsg.textContent = `This email is used`;
+    }
+
     else if (!passwordRegex.test(passwordInput[0].value)) {
         console.log(passwordInput[0].value)
         errorMsg.textContent = `Password must contain at least one lowercase letter, one uppercase letter, one digit, and be at least 8 characters long`;
@@ -54,27 +72,27 @@ sumbitButton.onclick = () => {
     else if (passwordInput[0].value !== passwordInput[1].value) {
         errorMsg.textContent = `Passwords are not matched`;
     }
+ 
+    else {
+        errorMsg.textContent = '';
+
+        const newUser = {
+            firstName: firstNameInput.value,
+            lastName: lastNameInput.value,
+            email: emailAddressInput.value,
+            password: passwordInput[0].value,
+            userAnswers: [],
+            isLoggedIn: false
+        };
+
+        allUsers.push(newUser);
+
+        localStorage.setItem("usersInfo", JSON.stringify(allUsers));
+        window.location.href = '/HTML/signinPage.html';
+    }
 }
 
 
 
-//  if we need it on the localStorage this is the code //
-
-
-
-// if (localStorage.getItem('users') != undefined) {
-//     users = JSON.parse(localStorage.getItem('users'));
-// }
-
-// signInBtn.onclick = () => {
-//     const newUser = {
-//         "email": userEmail.value,
-//         "password": userPassword.value
-//     };
-
-//     users.push(newUser);
-
-//     localStorage.setItem('users', JSON.stringify(users));
-// };
 
 
