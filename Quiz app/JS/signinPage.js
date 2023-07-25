@@ -21,6 +21,11 @@ showPasswordIcons.addEventListener("click", (e) => {
 
 // Login + set the value of isLoggedIn "true".
 signInBtn.addEventListener("click", () => {
+
+    for (let i = 0; i < allUsers.length; i++) {
+        allUsers[i].isLoggedIn = false;
+    }
+
     for (let i = 0; i < allUsers.length; i++) {
         if (userEmail.value === allUsers[i].email && userPassword.value === allUsers[i].password) {
             errorMsg.textContent = '';
