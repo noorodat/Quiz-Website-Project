@@ -26,52 +26,6 @@ let quizResult;
 const quizTime = 20;
 
 
-// user loged in start
-
-for (let i = 0; i < allUsers.length; i++) {
-    if (allUsers[i].isLoggedIn === true) {
-        loggedInUser = allUsers[i];
-        document.getElementById("welcome").textContent = `Hello ${loggedInUser.firstName} ${loggedInUser.lastName}`;
-        logoutCont.style.display = "block"
-        loginCont.style.display = "none";
-        registerCont.style.display = "none";
-        headerUserName.style.display = "inline";
-        startQuizLink.href = "/HTML/quizPage.html"
-        headerUserName.textContent = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
-    else {
-            window.location.href = "/HTML/signinPage.html";
-        }
-    }
-}
-
-
-
-
-// user loged in end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 fetch(`/JS/quizApp.json`)
     .then((res) => {
         if (res.ok) {
@@ -153,6 +107,7 @@ function fixedBTN() {
 function nextQuestion() {
     let warningMsg = document.createElement("span");
     warningMsg.style = "position: absolute; font-size: 20px";
+    // Handle next click
     nextBtn.addEventListener("click", () => {
         let quizTitle = document.getElementById("quizTitle");
 

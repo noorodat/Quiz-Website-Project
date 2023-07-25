@@ -60,7 +60,7 @@ function compareUserAnswers() {
     
         let see = document.getElementById("see");
         see.addEventListener("click", () =>
-            window.location.href = "Result.html"
+            window.location.href = "/HTML/resultPage.html"
     
         )
     }
