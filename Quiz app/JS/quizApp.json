@@ -26,10 +26,11 @@
         "correct_answer": "simile"
       }
     ],
+
     "iq_quiz": [
       {
         "question": "If all roses are flowers, and some flowers fade quickly, can we conclude that some roses fade quickly?",
-        "options": ["Yes", "No"],
+        "options": ["Yes", "No", "Yes", "Yes"],
         "correct_answer": "Yes"
       },
       {
@@ -44,15 +45,21 @@
       },
       {
         "question": "If a plane crashes on the border between the USA and Canada, where would the survivors be buried?",
-        "options": ["USA", "Canada"],
+        "options": ["USA", "Canada", "Survivors would not be buried; they are alive.", "Jordan"],
         "correct_answer": "Survivors would not be buried; they are alive."
       },
       {
         "question": "Complete the following series: 3, 6, 9, 12, ___",
         "options": ["13", "14", "15", "16"],
         "correct_answer": "15"
+      },
+      {
+        "question": "What is the capital city of Australia?",
+        "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+        "correct_answer": "Canberra"
       }
-    ],
+    ],    
+
     "technical_quiz": [
       {
         "question": "What does CSS stand for in web development?",
