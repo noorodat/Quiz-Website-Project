@@ -2,6 +2,7 @@ let allUsers = JSON.parse(localStorage.getItem("usersInfo"));
 let loggedInUser = {};
 
 
+let loginBtn = document.getElementById("login");
 let logoutBtn = document.getElementById("logout");
 let logoutCont = document.getElementById("logoutCont");
 let loginCont = document.getElementById("loginCont");
@@ -50,7 +51,7 @@ logoutBtn.onclick = () => {
         allUsers[i].isLoggedIn = false;     
     }
     localStorage.setItem("usersInfo", JSON.stringify(allUsers));
-    submitAnswers();
+    submitAnswers()
     window.location.href = "/HTML/homepage.html";
 }
 
@@ -99,7 +100,32 @@ fetch(`/JS/quizApp.json`)
             quizTitle.textContent = 'Technical Quiz';
             quizTypeImage.src = `/Images/techSkills.svg`
         }
-   
+        if (savedQuizIndex == 2 && savedQuestionIndex== 10) {
+            const fill = document.getElementById("fill");
+            fill.style.width = `100%`;
+
+            // We have reached the last quiz (technical_quiz) and the quiz has ended
+            // Disable the "Next" button
+            nextBtn.disabled = true;
+            // Show a message indicating that the quiz has ended
+            questionsContainer.innerHTML = `
+            <div class="question" id="question">
+                    <p id="finishParagraph">You finished the Quiz!</p>
+                    <a href = "/HTML/scorePage.html"><button id="finishQuiz">Submit Answers</button></a>
+            </div>
+            `;
+
+            // Add to local storage on submit
+            document.getElementById("finishQuiz").onclick = () => {
+                submitAnswers();
+                clearInterval(countdownInterval);
+            };
+
+            document.getElementById("next").style.display = "none";
+            quizTitle.textContent = 'Done';
+            return; // Exit the function to prevent going back to the first quiz
+        }
+        
 
         if (savedQuestionIndex !== null && savedQuizIndex !== null) {
             // Restore the current quiz state
@@ -159,7 +185,6 @@ function showQuiz(quizData, quizType, index) {
 
 }
 
-
 fixedAlerts.innerHTML = `
 <div>
 <img src="/Images/EnglishFixed.svg" alt="">
@@ -176,11 +201,9 @@ function fixedBTN() {
     fixedAlerts.style.display = "none";
 }
 
-
 document.getElementById("READY").addEventListener("click", () => {
     startCountdown();
 })
-
 
 function nextQuestion() {
     let warningMsg = document.createElement("span");
@@ -289,7 +312,6 @@ function nextQuestion() {
 
             showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
         }
-
         else {
             warningMsg.textContent = 'Please choose one of the options';
             warningMsg.style.color = "red";
@@ -298,12 +320,15 @@ function nextQuestion() {
     });
 }
 
-console.log(allUsers[userIndex]);
 
+
+
+
+console.log(allUsers[userIndex]);
 
 nextQuestion();
 
-
+// ... Your existing code ...
 
 let countdownInterval; // Variable to store the interval for the countdown timer
 const quizTimeLimit = quizTime * 60; // 20 minutes in seconds for the entire quiz
@@ -334,6 +359,8 @@ function startCountdown() {
             clearInterval(countdownInterval);
             window.location.href = '/HTML/scorePage.html'
 
+            // Handle end of the quiz (e.g., disable buttons, show results, etc.)
+            // Add your code here...
             document.getElementById("timer").textContent = "00:00"; // Optional, set the timer to 00:00 when the time is up
         }
         // Update the timer display
@@ -368,6 +395,6 @@ function setProgressFill() {
     fill.style.width = `${progressWidth}%`;
 }
 
-window.addEventListener('load', () => {
-    setProgressFill();
-});
+// window.addEventListener('load', () => {
+//     setProgressFill();
+// });
