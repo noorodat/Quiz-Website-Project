@@ -2,7 +2,6 @@ let allUsers = JSON.parse(localStorage.getItem("usersInfo"));
 let loggedInUser = {};
 
 
-let loginBtn = document.getElementById("login");
 let logoutBtn = document.getElementById("logout");
 let logoutCont = document.getElementById("logoutCont");
 let loginCont = document.getElementById("loginCont");
@@ -51,43 +50,11 @@ logoutBtn.onclick = () => {
         allUsers[i].isLoggedIn = false;     
     }
     localStorage.setItem("usersInfo", JSON.stringify(allUsers));
+    submitAnswers();
     window.location.href = "/HTML/homepage.html";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // mohammad end
-
-
-
-
-
-
-
-
-
 
 
 fetch(`/JS/quizApp.json`)
@@ -106,18 +73,6 @@ fetch(`/JS/quizApp.json`)
     .catch((err) => {
         console.log(err);
     });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // 
@@ -144,16 +99,7 @@ fetch(`/JS/quizApp.json`)
             quizTitle.textContent = 'Technical Quiz';
             quizTypeImage.src = `/Images/techSkills.svg`
         }
-        
-
-
-
-
-
-
-
-
-
+   
 
         if (savedQuestionIndex !== null && savedQuizIndex !== null) {
             // Restore the current quiz state
@@ -171,26 +117,6 @@ fetch(`/JS/quizApp.json`)
     };
 
 // 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -234,15 +160,6 @@ function showQuiz(quizData, quizType, index) {
 }
 
 
-
-
-
-
-
-
-
-
-
 fixedAlerts.innerHTML = `
 <div>
 <img src="/Images/EnglishFixed.svg" alt="">
@@ -260,40 +177,9 @@ function fixedBTN() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.getElementById("READY").addEventListener("click", () => {
     startCountdown();
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function nextQuestion() {
@@ -368,7 +254,7 @@ function nextQuestion() {
                     </div>
                     </div>
                     `;
-                    if( progressWidth == 20 ){
+                    if( quizTypeIndex == 1 ){
                         fixedAlerts.style.display = "flex";
                         document.body.style.overflow = "hidden";
                     }
@@ -404,14 +290,6 @@ function nextQuestion() {
             showQuiz(quizzes, quizNames[quizTypeIndex], questionIndex);
         }
 
-
-
-
-
-
-
-
-
         else {
             warningMsg.textContent = 'Please choose one of the options';
             warningMsg.style.color = "red";
@@ -420,48 +298,12 @@ function nextQuestion() {
     });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 console.log(allUsers[userIndex]);
-
-
-
-
 
 
 nextQuestion();
 
-// ... Your existing code ...
+
 
 let countdownInterval; // Variable to store the interval for the countdown timer
 const quizTimeLimit = quizTime * 60; // 20 minutes in seconds for the entire quiz
@@ -492,8 +334,6 @@ function startCountdown() {
             clearInterval(countdownInterval);
             window.location.href = '/HTML/scorePage.html'
 
-            // Handle end of the quiz (e.g., disable buttons, show results, etc.)
-            // Add your code here...
             document.getElementById("timer").textContent = "00:00"; // Optional, set the timer to 00:00 when the time is up
         }
         // Update the timer display

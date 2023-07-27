@@ -19,6 +19,11 @@ showPasswordIcons.addEventListener("click", (e) => {
     }
 });
 
+document.getElementById("createAccount").onclick = () => {
+    console.log("YES")
+    window.location.href = "/HTML/signupPage.html";
+}
+
 // Login + set the value of isLoggedIn "true".
 signInBtn.addEventListener("click", () => {
 
