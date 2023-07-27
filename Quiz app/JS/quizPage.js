@@ -1,15 +1,15 @@
 let allUsers = JSON.parse(localStorage.getItem("usersInfo"));
 let loggedInUser = {};
 
+// -------------------------------------------
 
-let loginBtn = document.getElementById("login");
 let logoutBtn = document.getElementById("logout");
 let logoutCont = document.getElementById("logoutCont");
 let loginCont = document.getElementById("loginCont");
 let registerCont = document.getElementById("registerCont");
 let headerUserName = document.getElementById("headerUserName");
 
-
+// -------------------------------------------
 
 let questionsContainer = document.getElementById("questionConteiner");
 let nextBtn = document.getElementById("next");
@@ -21,9 +21,9 @@ let quizzes = {};
 let answers = [];
 let userIndex;
 let fixedAlerts = document.getElementById("fixed");
-let fixedREADY = document.getElementById("READY");
+
 let sure = true;
-let quizResult;
+
 const quizTime = 20;
 
 
